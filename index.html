@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mybiz — Your books. Your building. Your box.</title>
+<meta name="description" content="Mybiz is a private, on-premises bookkeeping appliance. You own the box. Your financial data never leaves your building. A founding-customer reserve.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Spline+Sans+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Palette: "owned hardware in a quiet room" — slate, warm paper, signal amber */
+    --ink:        #1a1d21;   /* near-black, slate-warm */
+    --ink-soft:   #3c4148;
+    --paper:      #f3efe7;   /* warm off-white, not cream-trendy */
+    --paper-deep: #e8e2d6;
+    --line:       #cdc6b8;   /* hairline on paper */
+    --slate:      #20242a;   /* the "box" dark */
+    --slate-line: #353b44;
+    --amber:      #c2671a;   /* signal amber — the only accent */
+    --amber-soft: #d98a3f;
+    --paper-on-dark: #ece6da;
+    --muted-on-dark:#9aa0a8;
+    --green:      #4f6f52;   /* "go" / paid */
+    --max: 1080px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Newsreader",Georgia,serif;
+    font-size:19px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+    html{scroll-behavior:auto;}
+  }
+
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px;}
+
+  /* ---------- type ---------- */
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-0.01em;margin:0;}
+  .mono{font-family:"Spline Sans Mono",monospace;}
+  .eyebrow{
+    font-family:"Spline Sans Mono",monospace;
+    font-size:13px;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--amber);font-weight:500;
+  }
+  a{color:inherit;}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:50;
+    background:rgba(243,239,231,0.88);
+    backdrop-filter:saturate(140%) blur(8px);
+  }
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;}
+  .brand{font-family:"Fraunces",serif;font-weight:600;font-size:21px;letter-spacing:-0.02em;display:flex;align-items:center;gap:11px;}
+  .brand .dot{width:9px;height:9px;border-radius:2px;background:var(--amber);box-shadow:0 0 0 3px rgba(194,103,26,0.18);display:inline-block;}
+  .topnav{display:flex;gap:26px;align-items:center;font-family:"Spline Sans Mono",monospace;font-size:13px;letter-spacing:0.04em;}
+  .topnav a{text-decoration:none;color:var(--ink-soft);padding:4px 0;border-bottom:1px solid transparent;transition:border-color .2s,color .2s;}
+  .topnav a:hover{color:var(--ink);border-color:var(--amber);}
+  .topnav a.cta{color:var(--amber);font-weight:500;}
+  @media(max-width:680px){.topnav a:not(.cta){display:none;}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:84px 0 64px;border-bottom:1px solid var(--line);position:relative;overflow:hidden;}
+  .hero .grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:center;}
+  @media(max-width:860px){.hero .grid{grid-template-columns:1fr;gap:40px;}}
+  .hero h1{font-size:clamp(40px,6.2vw,68px);margin:18px 0 0;}
+  .hero h1 em{font-style:italic;color:var(--amber);}
+  .hero .lede{font-size:21px;color:var(--ink-soft);margin:22px 0 0;max-width:34ch;}
+  .hero-cta{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
+
+  /* the box illustration — CSS-drawn appliance, the signature element */
+  .appliance{
+    position:relative;
+    aspect-ratio:1/0.84;
+    background:linear-gradient(155deg,#2a2f37 0%,#181b20 64%);
+    border-radius:14px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 30px 60px -28px rgba(20,20,24,0.55),
+      0 8px 18px -10px rgba(20,20,24,0.4);
+    padding:26px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    border:1px solid #0d0f12;
+  }
+  .appliance .vents{display:flex;flex-direction:column;gap:5px;}
+  .appliance .vents span{height:2px;background:#0e1014;border-radius:2px;box-shadow:0 1px 0 rgba(255,255,255,0.04);}
+  .appliance .vents span:nth-child(1){width:64%;}
+  .appliance .vents span:nth-child(2){width:78%;}
+  .appliance .vents span:nth-child(3){width:54%;}
+  .appliance .vents span:nth-child(4){width:70%;}
+  .appliance .face{display:flex;align-items:flex-end;justify-content:space-between;}
+  .appliance .label{font-family:"Fraunces",serif;color:var(--paper-on-dark);font-size:22px;font-weight:600;letter-spacing:-0.01em;}
+  .appliance .label small{display:block;font-family:"Spline Sans Mono",monospace;font-size:10.5px;letter-spacing:0.16em;color:var(--muted-on-dark);font-weight:400;text-transform:uppercase;margin-top:4px;}
+  .appliance .led{display:flex;align-items:center;gap:8px;font-family:"Spline Sans Mono",monospace;font-size:10px;letter-spacing:0.14em;color:var(--muted-on-dark);text-transform:uppercase;}
+  .appliance .led b{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(79,111,82,0.6);animation:pulse 3.4s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(79,111,82,0.55);}70%{box-shadow:0 0 0 7px rgba(79,111,82,0);}100%{box-shadow:0 0 0 0 rgba(79,111,82,0);}}
+  .appliance .ports{display:flex;gap:7px;margin-top:2px;}
+  .appliance .ports i{width:22px;height:9px;border-radius:2px;background:#0e1014;box-shadow:0 1px 0 rgba(255,255,255,0.05) inset;}
+  .appliance .cable{position:absolute;right:-1px;top:58%;width:48px;height:8px;background:linear-gradient(90deg,#0e1014,#2a2f37);border-radius:0 6px 6px 0;}
+  .your-data{margin-top:18px;text-align:center;font-family:"Spline Sans Mono",monospace;font-size:11.5px;letter-spacing:0.1em;color:var(--ink-soft);}
+  .your-data b{color:var(--amber);}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:"Spline Sans Mono",monospace;font-size:14px;letter-spacing:0.02em;font-weight:500;
+    padding:15px 26px;border-radius:8px;text-decoration:none;cursor:pointer;border:1px solid transparent;
+    transition:transform .12s ease,box-shadow .2s ease,background .2s;
+  }
+  .btn-primary{background:var(--amber);color:#fff;box-shadow:0 10px 22px -12px rgba(194,103,26,0.8);}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 14px 26px -12px rgba(194,103,26,0.85);}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--ink);}
+  .btn-arrow{transition:transform .15s;}
+  .btn:hover .btn-arrow{transform:translateX(3px);}
+
+  /* ---------- section scaffolding ---------- */
+  section{padding:72px 0;border-bottom:1px solid var(--line);}
+  .sec-head{max-width:60ch;margin-bottom:40px;}
+  .sec-head h2{font-size:clamp(28px,4vw,40px);margin-top:12px;}
+  .sec-head p{color:var(--ink-soft);font-size:20px;margin:16px 0 0;}
+
+  /* truth strip */
+  .truth{background:var(--slate);color:var(--paper-on-dark);border-bottom:1px solid #0d0f12;}
+  .truth .wrap{padding-top:60px;padding-bottom:60px;}
+  .truth .eyebrow{color:var(--amber-soft);}
+  .truth h2{color:var(--paper-on-dark);font-size:clamp(26px,3.6vw,36px);max-width:24ch;}
+  .truth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--slate-line);border:1px solid var(--slate-line);border-radius:12px;overflow:hidden;margin-top:40px;}
+  @media(max-width:760px){.truth-grid{grid-template-columns:1fr;}}
+  .truth-cell{background:var(--slate);padding:30px 26px;}
+  .truth-cell .n{font-family:"Spline Sans Mono",monospace;font-size:12px;letter-spacing:0.14em;color:var(--amber-soft);text-transform:uppercase;}
+  .truth-cell h3{color:var(--paper-on-dark);font-size:21px;margin:14px 0 8px;}
+  .truth-cell p{color:var(--muted-on-dark);font-size:16.5px;margin:0;line-height:1.55;}
+
+  /* comparison / TCO table */
+  .tco{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media(max-width:760px){.tco{grid-template-columns:1fr;}}
+  .tco-card{border:1px solid var(--line);border-radius:14px;padding:30px 28px;background:#fbf9f4;}
+  .tco-card.win{border-color:var(--amber);box-shadow:0 18px 40px -28px rgba(194,103,26,0.4);position:relative;}
+  .tco-card.win::before{content:"WHAT YOU OWN AFTER 5 YEARS";position:absolute;top:-11px;left:24px;background:var(--amber);color:#fff;font-family:"Spline Sans Mono",monospace;font-size:10px;letter-spacing:0.12em;padding:4px 10px;border-radius:5px;}
+  .tco-card h3{font-size:23px;}
+  .tco-card .who{font-family:"Spline Sans Mono",monospace;font-size:12.5px;letter-spacing:0.04em;color:var(--ink-soft);margin-top:4px;}
+  .tco-line{display:flex;justify-content:space-between;align-items:baseline;padding:13px 0;border-bottom:1px dotted var(--line);font-size:16.5px;}
+  .tco-line:last-of-type{border-bottom:none;}
+  .tco-line .v{font-family:"Spline Sans Mono",monospace;font-size:15px;}
+  .tco-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;padding-top:18px;border-top:2px solid var(--ink);}
+  .tco-total .lbl{font-family:"Fraunces",serif;font-size:18px;font-weight:600;}
+  .tco-total .amt{font-family:"Fraunces",serif;font-size:34px;font-weight:600;}
+  .tco-card.win .amt{color:var(--amber);}
+  .tco-foot{margin-top:14px;font-size:14.5px;color:var(--ink-soft);line-height:1.5;}
+  .tco-foot.own{color:var(--green);font-weight:500;}
+  .tco-note{font-size:14px;color:var(--ink-soft);margin-top:22px;max-width:70ch;font-style:italic;}
+
+  /* two-path / audience split */
+  .paths{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media(max-width:760px){.paths{grid-template-columns:1fr;}}
+  .path{border:1px solid var(--line);border-radius:14px;padding:34px 30px;background:#fbf9f4;display:flex;flex-direction:column;}
+  .path .tag{font-family:"Spline Sans Mono",monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--amber);}
+  .path h3{font-size:25px;margin:14px 0 0;}
+  .path p{color:var(--ink-soft);font-size:17px;margin:14px 0 0;flex:1;}
+  .path .pts{list-style:none;padding:0;margin:18px 0 0;}
+  .path .pts li{position:relative;padding-left:22px;margin:10px 0;font-size:16px;color:var(--ink);}
+  .path .pts li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:2px;background:var(--amber);}
+  .path .btn{margin-top:26px;align-self:flex-start;}
+
+  /* reserve / offer block */
+  .reserve{background:var(--slate);color:var(--paper-on-dark);border-bottom:none;}
+  .reserve .eyebrow{color:var(--amber-soft);}
+  .reserve h2{color:var(--paper-on-dark);font-size:clamp(30px,4.4vw,46px);max-width:18ch;}
+  .reserve-grid{display:grid;grid-template-columns:0.92fr 1.08fr;gap:48px;margin-top:44px;align-items:start;}
+  @media(max-width:860px){.reserve-grid{grid-template-columns:1fr;gap:36px;}}
+  .offer-terms{list-style:none;padding:0;margin:0;}
+  .offer-terms li{display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--slate-line);}
+  .offer-terms li:last-child{border-bottom:none;}
+  .offer-terms .k{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber-soft);min-width:104px;padding-top:3px;}
+  .offer-terms .d{color:var(--paper-on-dark);font-size:17px;line-height:1.5;}
+  .offer-terms .d b{color:#fff;}
+  .offer-terms .d small{color:var(--muted-on-dark);display:block;font-size:14px;margin-top:3px;}
+
+  .form-card{background:#fbf9f4;color:var(--ink);border-radius:16px;padding:34px 32px;box-shadow:0 30px 60px -30px rgba(0,0,0,0.5);}
+  .form-card h3{font-size:24px;}
+  .form-card .sub{color:var(--ink-soft);font-size:16px;margin:8px 0 24px;}
+  .field{margin-bottom:18px;}
+  .field label{display:block;font-family:"Spline Sans Mono",monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px;}
+  .field input,.field select,.field textarea{
+    width:100%;font-family:"Newsreader",serif;font-size:17px;color:var(--ink);
+    background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px;
+    transition:border-color .15s,box-shadow .15s;
+  }
+  .field input:focus,.field select:focus,.field textarea:focus{
+    outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(194,103,26,0.16);
+  }
+  .field textarea{resize:vertical;min-height:74px;}
+  .commit-row{display:flex;align-items:flex-start;gap:11px;margin:6px 0 22px;}
+  .commit-row input{margin-top:5px;width:17px;height:17px;accent-color:var(--amber);flex:none;}
+  .commit-row label{font-family:"Newsreader",serif;text-transform:none;letter-spacing:0;font-size:15.5px;color:var(--ink-soft);line-height:1.5;margin:0;}
+  .commit-row label b{color:var(--ink);}
+  .form-card .btn-primary{width:100%;justify-content:center;font-size:15px;}
+  .form-fine{font-size:13.5px;color:var(--ink-soft);margin-top:16px;line-height:1.55;text-align:center;}
+
+  /* faq */
+  details{border-bottom:1px solid var(--line);padding:6px 0;}
+  details summary{cursor:pointer;list-style:none;padding:18px 36px 18px 0;font-family:"Fraunces",serif;font-size:20px;font-weight:500;position:relative;}
+  details summary::-webkit-details-marker{display:none;}
+  details summary::after{content:"+";position:absolute;right:4px;top:16px;font-family:"Spline Sans Mono",monospace;font-size:22px;color:var(--amber);transition:transform .2s;}
+  details[open] summary::after{transform:rotate(45deg);}
+  details .a{color:var(--ink-soft);font-size:17px;padding:0 36px 20px 0;margin:0;line-height:1.6;}
+  details .a b{color:var(--ink);}
+
+  /* footer */
+  footer{background:var(--slate);color:var(--muted-on-dark);padding:54px 0 40px;}
+  footer .wrap{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;}
+  footer .brand{color:var(--paper-on-dark);}
+  footer p{font-size:14.5px;line-height:1.6;max-width:46ch;margin:14px 0 0;}
+  footer .mono{font-size:12.5px;letter-spacing:0.04em;}
+  footer a{color:var(--amber-soft);text-decoration:none;}
+
+  .honest-tag{display:inline-flex;align-items:center;gap:8px;font-family:"Spline Sans Mono",monospace;font-size:12px;letter-spacing:0.08em;color:var(--ink-soft);border:1px solid var(--line);border-radius:30px;padding:7px 15px;text-transform:uppercase;}
+  .honest-tag b{width:7px;height:7px;border-radius:50%;background:var(--green);}
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>Mybiz</div>
+    <nav class="topnav">
+      <a href="#why">Why on-prem</a>
+      <a href="#cost">The math</a>
+      <a href="#cpa">For CPAs</a>
+      <a href="#reserve" class="cta">Reserve a box →</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap grid">
+    <div>
+      <span class="eyebrow">Private bookkeeping · on-premises · founding reserve</span>
+      <h1>Your books.<br>Your building.<br><em>Your box.</em></h1>
+      <p class="lede">Mybiz is a bookkeeping appliance you own outright. It plugs into your network and keeps your financial data inside your own walls — not in someone else's cloud, not behind a subscription that can lock you out of your own records.</p>
+      <div class="hero-cta">
+        <a href="#reserve" class="btn btn-primary">Reserve a founding box <span class="btn-arrow">→</span></a>
+        <a href="#cost" class="btn btn-ghost">See the 5-year math</a>
+      </div>
+    </div>
+    <div>
+      <div class="appliance">
+        <div class="vents"><span></span><span></span><span></span><span></span></div>
+        <div class="face">
+          <div class="label">Mybiz<small>On-prem ledger</small></div>
+          <div class="led"><b></b> Books live</div>
+        </div>
+        <div class="ports"><i></i><i></i><i></i><i></i></div>
+        <span class="cable"></span>
+      </div>
+      <div class="your-data">data path: <b>your box → your screen</b> · never leaves the room</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ THE TRUTH STRIP ============ -->
+<section class="truth" id="why">
+  <div class="wrap">
+    <span class="eyebrow">Why this exists</span>
+    <h2>The incumbents don't actually want to do your books.</h2>
+    <p style="color:var(--muted-on-dark);font-size:19px;max-width:58ch;margin-top:18px;">They want to capture your data and rent it back to you. Mybiz was built the other way around — by a small-business owner who needed real books and real operating reports, and was tired of paying a rising monthly fee for neither.</p>
+    <div class="truth-grid">
+      <div class="truth-cell">
+        <div class="n">01 — Ownership</div>
+        <h3>You buy it once</h3>
+        <p>The box is yours. No subscription holds your books hostage, and a lapsed payment can never lock you out of your own financial records.</p>
+      </div>
+      <div class="truth-cell">
+        <div class="n">02 — Privacy</div>
+        <h3>Data stays in the building</h3>
+        <p>Your ledger lives on hardware you control, on your own network. Nothing is uploaded to a vendor's cloud by default. An air-gapped mode exists for the security-sensitive.</p>
+      </div>
+      <div class="truth-cell">
+        <div class="n">03 — Real reporting</div>
+        <h3>Books done properly</h3>
+        <p>Double-entry bookkeeping plus the operating reports an owner actually needs to run the company — not just data capture dressed up as accounting.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE MATH / TCO ============ -->
+<section id="cost">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">The honest math</span>
+      <h2>Owning beats renting — and the gap widens every year.</h2>
+      <p>Cloud bookkeeping is a payment you make forever, on a price the vendor raises on their schedule. Mybiz is a one-time purchase plus a modest security-and-maintenance line. Here's a five-year comparison, with real numbers.</p>
+    </div>
+
+    <div class="tco">
+      <div class="tco-card">
+        <h3>Cloud subscription</h3>
+        <div class="who">e.g. QuickBooks Online "Plus" tier</div>
+        <div class="tco-line"><span>Up-front cost</span><span class="v">$0</span></div>
+        <div class="tco-line"><span>Year 1–5 subscription</span><span class="v">~$1,380 / yr</span></div>
+        <div class="tco-line"><span>Price increases</span><span class="v">on their schedule</span></div>
+        <div class="tco-line"><span>Where your data lives</span><span class="v">their cloud</span></div>
+        <div class="tco-total"><span class="lbl">5-year total</span><span class="amt">~$6,900</span></div>
+        <p class="tco-foot">And at the end, you own nothing. Stop paying and you can lose access to your own books.</p>
+      </div>
+
+      <div class="tco-card win">
+        <h3>Mybiz</h3>
+        <div class="who">Founding-customer pricing</div>
+        <div class="tco-line"><span>The box (one-time, you own it)</span><span class="v">$2,500</span></div>
+        <div class="tco-line"><span>Security &amp; maintenance</span><span class="v">$300 / yr</span></div>
+        <div class="tco-line"><span>Price increases</span><span class="v">none built in</span></div>
+        <div class="tco-line"><span>Where your data lives</span><span class="v">your building</span></div>
+        <div class="tco-total"><span class="lbl">5-year total</span><span class="amt">~$3,700</span></div>
+        <p class="tco-foot own">↳ And you own the appliance. Your data never left the room.</p>
+      </div>
+    </div>
+    <p class="tco-note">Figures are illustrative founding-cohort pricing for planning the build, anchored to current published cloud rates. The cloud column holds the subscription flat for fairness — in practice those rates have risen 15–25% in a single year. Final pricing is confirmed with founding customers before any box ships.</p>
+  </div>
+</section>
+
+<!-- ============ WHAT'S IN / WHAT'S NOT (honesty) ============ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Straight about scope</span>
+      <h2>What the first box does — and what it deliberately doesn't.</h2>
+      <p>An honest pre-sale means telling you exactly what you'd be reserving. No roadmap features dressed up as shipping ones.</p>
+    </div>
+    <div class="paths" style="grid-template-columns:1fr 1fr;">
+      <div class="path">
+        <span class="tag" style="color:var(--green)">In the first box</span>
+        <h3>Books &amp; operating reports</h3>
+        <ul class="pts">
+          <li>Full double-entry bookkeeping</li>
+          <li>The operating reports owners actually use to run the business</li>
+          <li>Runs entirely on your owned hardware, on your network</li>
+          <li>Air-gapped update mode for the security-sensitive</li>
+        </ul>
+      </div>
+      <div class="path">
+        <span class="tag" style="color:var(--ink-soft)">Not in v1 — on the roadmap</span>
+        <h3>Tax computation</h3>
+        <p style="margin-top:6px">Mybiz keeps clean books; <b style="color:var(--ink)">your CPA does the taxes from them.</b> Tax-currency features are planned as a separate paid add-on, offered only once they're built and stand on their own. You are not reserving a tax engine today, and we won't pretend otherwise.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TWO AUDIENCES ============ -->
+<section id="cpa">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Two ways in</span>
+      <h2>For the owner who wants their books back. For the CPA who's tired of the cloud tax.</h2>
+    </div>
+    <div class="paths">
+      <div class="path">
+        <span class="tag">Small-business owners</span>
+        <h3>Own your books outright</h3>
+        <p>You run a real business and you want real books, real operating visibility, and your most sensitive financial data kept inside your own walls — not rented from a vendor who raises the price every year.</p>
+        <ul class="pts">
+          <li>One box, owned by you</li>
+          <li>Private by default, air-gapped if you need it</li>
+          <li>Hands your accountant clean books at tax time</li>
+        </ul>
+        <a href="#reserve" class="btn btn-primary">Reserve a box <span class="btn-arrow">→</span></a>
+      </div>
+      <div class="path">
+        <span class="tag">CPAs &amp; accounting firms</span>
+        <h3>Refer it. It feeds your work.</h3>
+        <p>You advise dozens of small businesses and feel the cloud-subscription pain on every one. Mybiz doesn't compete with you — it does the bookkeeping properly and privately, and hands you clean books. The tax work stays yours.</p>
+        <ul class="pts">
+          <li>Clean books in, your tax work unchanged</li>
+          <li>Your clients' data stays on-premises</li>
+          <li>A referral relationship, not a disintermediation</li>
+        </ul>
+        <a href="#reserve" class="btn btn-ghost">Talk to us as a referrer <span class="btn-arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESERVE / OFFER ============ -->
+<section class="reserve" id="reserve">
+  <div class="wrap">
+    <span class="eyebrow">The founding reserve</span>
+    <h2>Reserve a founding box — and help prove this should be built.</h2>
+    <p style="color:var(--muted-on-dark);font-size:19px;max-width:60ch;margin-top:18px;">This is a real pre-build test. We're collecting genuine, costed commitments from real buyers before committing to the full build — so the people who want this most are the ones who shape it. If demand isn't there, it doesn't get built, and no one is charged.</p>
+
+    <div class="reserve-grid">
+      <ul class="offer-terms">
+        <li><span class="k">What it is</span><span class="d"><b>A $500 founding reserve</b>, credited in full toward your $2,500 box.<small>You're reserving a place in the first founding cohort at founding pricing.</small></span></li>
+        <li><span class="k">How it works</span><span class="d">Tell us about your business below. If you're a fit, <b>we send you an invoice for the $500</b> — you only pay when you've decided.<small>No card is charged from this page. You pay a real invoice, or you don't.</small></span></li>
+        <li><span class="k">Refundable</span><span class="d">The reserve is <b>fully refundable</b> until the build is committed.<small>If the test doesn't clear its threshold, the build doesn't proceed and reserves are returned.</small></span></li>
+        <li><span class="k">After the box</span><span class="d">A <b>$300/yr</b> security &amp; maintenance line keeps your networked appliance patched and current.<small>Stated plainly because the security is the point. Optional MSP support is available separately.</small></span></li>
+      </ul>
+
+      <div class="form-card">
+        <h3>Start your reserve</h3>
+        <p class="sub">No charge here. This tells us who you are; the invoice comes after.</p>
+        <!-- Formspree: replace the action URL with your form endpoint -->
+        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <div class="field">
+            <label for="name">Your name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="field">
+            <label for="business">Business name</label>
+            <input type="text" id="business" name="business" required>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="field">
+            <label for="role">I'm reserving as</label>
+            <select id="role" name="role" required>
+              <option value="">Choose one…</option>
+              <option value="owner">A small-business owner (end buyer)</option>
+              <option value="cpa-self">A CPA, for my own practice</option>
+              <option value="cpa-referrer">A CPA referring a client</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="referrer">Referred by a CPA? (name, optional)</label>
+            <input type="text" id="referrer" name="referred_by" placeholder="So we can credit the referral">
+          </div>
+          <div class="field">
+            <label for="note">Anything we should know? (optional)</label>
+            <textarea id="note" name="note" placeholder="What you use today, what's frustrating, what you'd need."></textarea>
+          </div>
+          <div class="commit-row">
+            <input type="checkbox" id="commit" name="commitment" value="committed-to-500-reserve" required>
+            <label for="commit">I understand this is a pre-build reserve. <b>I'm prepared to pay a refundable $500 reserve by invoice</b> to hold a founding box, knowing v1 is books-and-reporting (not tax) and the box ships only if the test clears its threshold.</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Send my reserve request →</button>
+          <p class="form-fine">We'll reply personally. No autopay, no card stored, no charge until you choose to pay an invoice.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Plain answers</span>
+      <h2>The questions worth asking before you reserve.</h2>
+    </div>
+
+    <details>
+      <summary>Is my money at risk if you don't build it?</summary>
+      <p class="a">No. The reserve is collected by invoice and is fully refundable until the build is committed. If the pre-build test doesn't reach its threshold, the build doesn't proceed and any reserves paid are returned. The whole point of this page is to find out whether enough real buyers want this <b>before</b> anything is built.</p>
+    </details>
+    <details>
+      <summary>Does Mybiz do my taxes?</summary>
+      <p class="a">Not in the first box. v1 keeps clean, proper books and the operating reports you need to run the business. <b>Your CPA does the taxes from those books.</b> Tax-currency features are planned as a separate paid add-on, and we'll only offer them once they're genuinely built — not as a promise to get you to reserve.</p>
+    </details>
+    <details>
+      <summary>What's the $300/year for, and is it mandatory?</summary>
+      <p class="a">It keeps a networked appliance patched and maintained — security updates, fixes, and reporting improvements. Because the box sits on your network, staying patched is a security necessity, so this line is required while you run the box. It is not a tax-currency claim; it's maintenance, stated honestly. Optional higher-touch support (handled by an outside IT partner) is available separately if you want it.</p>
+    </details>
+    <details>
+      <summary>What happens to my data?</summary>
+      <p class="a">It stays on the box, on your network, in your building. Mybiz is on-premises by design — your ledger isn't uploaded to a vendor cloud by default. For the most security-sensitive buyers, an air-gapped update mode lets you apply signed update packages by hand, so the box never needs an outbound connection at all.</p>
+    </details>
+    <details>
+      <summary>I'm a CPA. Why would I send my clients here?</summary>
+      <p class="a">Because it makes your work easier, not redundant. Mybiz produces clean, properly-kept books and hands them to you — the tax work stays entirely yours. Your clients keep their financial data on-premises instead of in a cloud subscription, and you stay in the loop rather than being designed out of it. Reserve as a referrer above and we'll talk about how the relationship works.</p>
+    </details>
+    <details>
+      <summary>When would I actually receive a box?</summary>
+      <p class="a">Only after this test clears its threshold and the build is hardened — particularly the security and update architecture, which we won't rush to hit a marketing date. Reserving puts you in the first founding cohort and at founding pricing; it does not promise a delivery date we can't yet honestly commit to.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="brand"><span class="dot"></span>Mybiz</div>
+      <p>A private, on-premises bookkeeping appliance. Built by a small-business owner, shaped by a practicing CPA, for people who want to own their books again.</p>
+      <div style="margin-top:20px;"><span class="honest-tag"><b></b> Honest pre-sale · no charge until you choose</span></div>
+    </div>
+    <div class="mono" style="text-align:right;">
+      <div>Reserve · founding cohort</div>
+      <p style="margin-top:8px;"><a href="#reserve">Reserve a box →</a></p>
+      <p style="margin-top:18px;color:var(--muted-on-dark);">Questions? Reply to your reserve confirmation and a person will answer.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

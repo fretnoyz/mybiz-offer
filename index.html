@@ -415,50 +415,47 @@
       <div class="form-card">
         <h3>Start your reserve</h3>
         <p class="sub">No charge here. This tells us who you are; the invoice comes after.</p>
-        <div data-fs-success style="display:none;text-align:center;padding:32px 0;">
+        <div id="reserve-success" style="display:none;text-align:center;padding:32px 0;">
           <p style="font-size:22px;font-family:'Fraunces',serif;font-weight:500;margin-bottom:12px;">Reserve request received.</p>
           <p style="color:var(--ink-soft);font-size:16px;line-height:1.6;">We'll be in touch personally. Thank you for being early.</p>
         </div>
-        <div data-fs-error style="display:none;color:#b91c1c;font-size:14px;margin-bottom:12px;"></div>
-        <form id="reserve-form" action="https://formspree.io/f/xykaojke" method="POST">
+        <form id="reserve-form" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="7c7bccbf-d14f-4bfa-84dc-56ef534897cf">
+          <input type="hidden" name="subject" value="Mybiz founding reserve request">
           <div class="field">
             <label for="name">Your name</label>
-            <input type="text" id="name" name="name" data-fs-field required>
-            <span data-fs-error="name" style="color:#b91c1c;font-size:13px;"></span>
+            <input type="text" id="name" name="name" required>
           </div>
           <div class="field">
             <label for="business">Business name</label>
-            <input type="text" id="business" name="business" data-fs-field required>
-            <span data-fs-error="business" style="color:#b91c1c;font-size:13px;"></span>
+            <input type="text" id="business" name="business" required>
           </div>
           <div class="field">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" data-fs-field required>
-            <span data-fs-error="email" style="color:#b91c1c;font-size:13px;"></span>
+            <input type="email" id="email" name="email" required>
           </div>
           <div class="field">
             <label for="role">I'm reserving as</label>
-            <select id="role" name="role" data-fs-field required>
+            <select id="role" name="role" required>
               <option value="">Choose one…</option>
               <option value="owner">A small-business owner (end buyer)</option>
               <option value="cpa-self">A CPA, for my own practice</option>
               <option value="cpa-referrer">A CPA referring a client</option>
             </select>
-            <span data-fs-error="role" style="color:#b91c1c;font-size:13px;"></span>
           </div>
           <div class="field">
             <label for="referrer">Referred by a CPA? (name, optional)</label>
-            <input type="text" id="referrer" name="referred_by" data-fs-field placeholder="So we can credit the referral">
+            <input type="text" id="referrer" name="referred_by" placeholder="So we can credit the referral">
           </div>
           <div class="field">
             <label for="note">Anything we should know? (optional)</label>
-            <textarea id="note" name="note" data-fs-field placeholder="What you use today, what's frustrating, what you'd need."></textarea>
+            <textarea id="note" name="note" placeholder="What you use today, what's frustrating, what you'd need."></textarea>
           </div>
           <div class="commit-row">
             <input type="checkbox" id="commit" name="commitment" value="committed-to-500-reserve" required>
             <label for="commit">I understand this is a pre-build reserve. <b>I'm prepared to pay a refundable $500 reserve by invoice</b> to hold a founding box, knowing v1 is books-and-reporting (not tax) and the box ships only if the test clears its threshold.</label>
           </div>
-          <button type="submit" class="btn btn-primary" data-fs-submit-btn>Send my reserve request →</button>
+          <button type="submit" id="reserve-btn" class="btn btn-primary">Send my reserve request →</button>
           <p class="form-fine">We'll reply personally. No autopay, no card stored, no charge until you choose to pay an invoice.</p>
         </form>
       </div>
@@ -518,9 +515,26 @@
 </footer>
 
 <script>
-  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
-  formspree('initForm', { formElement: '#reserve-form', formId: 'xykaojke' });
+  document.getElementById('reserve-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('reserve-btn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: new FormData(this),
+      headers: { 'Accept': 'application/json' }
+    });
+    const data = await res.json();
+    if (data.success) {
+      this.style.display = 'none';
+      document.getElementById('reserve-success').style.display = 'block';
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Send my reserve request →';
+      alert(data.message || 'Something went wrong. Please try again.');
+    }
+  });
 </script>
-<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 </body>
 </html>

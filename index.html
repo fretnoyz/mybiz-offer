@@ -416,7 +416,7 @@
         <h3>Start your reserve</h3>
         <p class="sub">No charge here. This tells us who you are; the invoice comes after.</p>
         <!-- Formspree: replace the action URL with your form endpoint -->
-        <form action="https://formspree.io/f/xykaojke" method="POST">
+        <form id="reserve-form" action="https://formspree.io/f/xykaojke" method="POST">
           <div class="field">
             <label for="name">Your name</label>
             <input type="text" id="name" name="name" required>
@@ -453,6 +453,10 @@
           <button type="submit" class="btn btn-primary">Send my reserve request →</button>
           <p class="form-fine">We'll reply personally. No autopay, no card stored, no charge until you choose to pay an invoice.</p>
         </form>
+        <div id="reserve-success" style="display:none;text-align:center;padding:32px 0;">
+          <p style="font-size:22px;font-family:'Fraunces',serif;font-weight:500;margin-bottom:12px;">Reserve request received.</p>
+          <p style="color:var(--ink-soft);font-size:16px;line-height:1.6;">We'll be in touch personally. Thank you for being early.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -509,5 +513,33 @@
   </div>
 </footer>
 
+<script>
+  const form = document.getElementById('reserve-form');
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.style.display = 'none';
+        document.getElementById('reserve-success').style.display = 'block';
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Send my reserve request →';
+        alert('Something went wrong. Please email us directly.');
+      }
+    } catch {
+      btn.disabled = false;
+      btn.textContent = 'Send my reserve request →';
+      alert('Something went wrong. Please email us directly.');
+    }
+  });
+</script>
 </body>
 </html>
